@@ -1,14 +1,19 @@
 {
   "name": "sklad",
   "version": "1.0.0",
-  "description": "",
+  "description": "home storage list",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Loki_23b",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Loki23b/sklad.git"
+  },
   "dependencies": {
+    "ejs": "^2.6.1",
     "express": "^4.16.4",
     "mongoose": "^5.4.18"
   }
