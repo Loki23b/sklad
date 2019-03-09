@@ -1,0 +1,10 @@
+//trash
+
+{
+    "name": "String",
+    "type": "String",
+    "firm": "String",
+    "has foto": "Boolean",
+    "quantity": "Int32",
+
+}

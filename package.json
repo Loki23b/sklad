@@ -13,6 +13,7 @@
     "url": "https://github.com/Loki23b/sklad.git"
   },
   "dependencies": {
+    "bcrypt": "^3.0.4",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "mongoose": "^5.4.18"
