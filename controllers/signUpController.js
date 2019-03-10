@@ -10,18 +10,21 @@ module.exports = function(app) {
     app.post('/signup', function(req, res) {
         console.log('incoming post request');
         
-        var newUser = Users({
+        var newUser = new Users({
             name: req.body.name,
-            pass: req.body.pass,
             isSudo: req.body.isSudo
         });
 
-        newUser.save(function(err) {
-            if (err) throw err;
-            res.send('Success');
+        newUser.generateHash(req.body.pass, function(hash) {
+            newUser.pass = hash;
+            newUser.save(function(err) {
+                if (err) throw err;
+                res.send('Success');
+            });
+            
         });
-        
     });
+        
 
     app.delete('/signup', function(req, res){
         Users.findOneAndDelete(req.body.id, function(err) {
@@ -32,4 +35,5 @@ module.exports = function(app) {
         
 
     })
+    
 };

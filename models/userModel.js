@@ -9,12 +9,12 @@ var userSchema = new Schema({
     isSudo: Boolean
 }); 
 
-userSchema.methods.generateHash = function(pass) {
-    return bcrypt.hash(pass, 10, function(err, hash){
-        if (err) throw err;
-        else console.log('new pass encrypted');
-    });
-}
+userSchema.methods.generateHash = function(pass, callback) {
+    bcrypt.hash(pass, 10).then(function(hash){
+        console.log('new pass encrypted, hash: ' + hash);
+        callback(hash);
+    })
+};
 
 var Users = mongoose.model('Users', userSchema);
 
