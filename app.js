@@ -20,7 +20,7 @@ signUpController(app);
 app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
-    res.send('Hello world');
+    res.send('Hello world again');
 })
 
 

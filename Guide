@@ -1,0 +1,91 @@
+ок. я попробую тут написать всё1 что надо сделать чтобы
+постаивть node и mongo.
+
+Сначала надо поставить ноду. Для установки на убунту идем сюда 
+https://github.com/nodesource/distributions/blob/master/README.md
+Там есть команды для консоли для установки разных версий ноды.
+У меня версия 8.15. Это довольно старая версия, но весь современный 
+функционал в ней есть.
+
+Вместе с нодой ставится npm. Это node package manager.
+Он подключен к единому репозиторию пакетов и автоматически 
+может поставить любой пакет с помощью комманды npm install
+
+Обычно создание node проекта начинается с создания пустой папки 
+и выполнения в ней команды npm init. Программа спросит тебя 
+дежурные вопросы но всё можно оставить в дефолтном состоянии, 
+потому что это важно только если мы потом собираемся публиковать
+проект как пакет node. Init создаст файл package.json
+В этом файле перечисляются все зависимости твоего проекта и разные
+другие настройки. В дальнейшем если ты будешь с помощью комманды 
+npm install <имя пакета> ставить а эту папку какие-либо пакеты 
+они автоматически добавятся в список зависимостей твоего проекта.
+Таким образом, ты можешь просто передать свой код кому-то и файл
+package.json и этот кто-то может сам установить все зависимости 
+и твой код у него будет работать. Устанавливаются все зависимости
+в папку node_modules. Если у тебя уже есть файл package.json и в 
+нем есть зависимости то ты их устанавливаешь коммандой npm install
+без названия пакета. Она смотрит файл и всё ставит.
+
+Теперь, когда node и npm стоят, я бы поставил express. Это легкий,
+гибкий http server framework. который в целом ничего за пользователя
+не делает. 
+в папке проекта команда 
+npm install express
+
+Также стоит поставить пакеты mongoose и nodemon.
+Первый нужен для работы с mongo, второй для автоматического
+перезапуска сервера если внесены изменения.
+npm install mongoose
+npm install nodemon
+
+Далее надо поставить монго. Интсрукции по установке тут
+https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
+Я на всякий напишу комманды для 16 убунты.
+
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+
+И требуется далее запустить сервис БД.
+sudo service mongod start
+
+Всё. далее надо писать app.js в котором мы запустим экспресс,
+заставим его слушать порт, отвечать на запросы и взаимодействовать
+с монго.
+
+Далее пример голого app.js. Там используется myItemDB кастомная 
+БД. Это моя созданная БДб но вроде если бы ее не существовало,
+то оно бы ее создало. 
+Если я всё правильно написал то создав такой файл и запустив его
+потом коммандой 
+nodemon app.js
+ты получишь сервак отвечающий на localhost Hello world. 
+Дальше можно читать доки по экспресс и монгус.
+
+var express = require('express');
+var app = express();
+var mongoose = require('mongoose');
+var port = 3000;
+var dbUrl = 'mongodb://localhost:27017/myItemDB'
+
+//setting up mongo connection
+mongoose.connect(dbUrl, { useNewUrlParser: true });
+var db = mongoose.connection
+//checking for mongo errors
+db.on('error', console.error.bind
+(console, 'connection error:'));
+// we're connected!
+db.once('open', function() {
+    console.log('connection to DB successful');
+  });
+
+app.set('view engine', 'ejs');
+
+app.get('/', function(req, res) {
+    res.send('Hello world');
+})
+
+
+app.listen(port);
